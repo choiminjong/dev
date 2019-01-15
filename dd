@@ -1,1 +1,94 @@
 https://www.office.com/?auth=2
+
+
+https://stefanprodan.com/2016/elasticsearch-cluster-with-docker/
+
+gs-index-query.html
+
+https://wedul.site/485
+
+https://www.slipp.net/wiki/display/SLS/Elastic+Stack
+
+
+
+Elasticsearch 설치
+
+해당 이미지에는 xpack도 포함되어있다. xpack은 보안, 알림, 모니터링, 보고, 그래프 기능을 설치하기 편리한 단일 패키지로 번들 구성한 Elastic Stack 확장 프로그램이다.
+
+
+
+
+우선 이미지를 내려받는다.
+
+1
+docker pull docker.elastic.co/elasticsearch/elasticsearch-platinum:6.0.0
+cs
+그리고 내려받은 이미지를 이용하여 Elasticsearch를 conatiner에 올려서 실행시킨다.
+
+1
+
+
+docker run -d -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "transport.host=127.0.0.1" --name elastic docker.elastic.co/elasticsearch/elasticsearch-platinum:6.0.0 && sleep 20
+
+
+docker run -d -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "transport.host=127.0.0.1" --name elastic 0a0ea46be626
+
+
+
+cs
+그리고 xpack 설치를 진행하기 위해서 우선 해당 컨테이너 bash 쉘을 실행시킨다.
+
+1
+2
+// bash shell 열기
+docker exec -it elastic /bin/bash
+cs
+그리고 xpack을 설치한다.
+
+1
+bin/elasticsearch-plugin install x-pack
+cs
+
+마지막으로 Elasticsearch에서 자동 색인 생성을 비활성화 해준경우에 xpack에서 다음 색인을 생성할 수 있도록 elasticsearch.yml에 설정해준다.
+
+1
+action.auto_create_index: .security,.monitoring*,.watches,.triggered_watches,.watcher-history*
+cs
+
+
+그러고 http://localhost:9200에 들어가면 정상적으로 설치된것을 확인할 수 있다. (계정입력하는 화면이 나오면 elastic / changeme 정보를 이용해서 사용한다.
+
+
+
+docker run -d --rm --link dazzling_mayer:elastic-url -e "ELASTICSEARCH_URL=http://localhost:9200" -p 5601:5601 --name kibana docker.elastic.co/kibana/kibana:6.0.0 && sleep 20
+cs
+
+
+출처: https://wedul.site/485 [wedul]
+
+출처: https://wedul.site/485 [wedul]
+
+출처: https://wedul.site/485 [wedul]
+
+#키밭나 설치
+docker run -d -p 5601:5601 --name kibana1 -e "ELASTICSEARCH_URL=http://localhost:9200" docker.elastic.co/kibana/kibana-oss:6.1.2
+
+#엘라스틱 
+docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.1.2
+
+docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch-oss:6.1.2
+
+
+docker run -p 9200:9200  -p 9300:9300 -e "transport.host=127.0.0.1"  docker.elastic.co/elasticsearch/elasticsearch:5.2.2
+
+
+docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.5.4
+
+
+
+docker.elastic.co
+
+docker run -p 9200:9200 -p 9300:9300 elasticsearch:head
+
+
+docker run --rm -ti -p 9200:9200 -p 9300:9300 elasticsearch:head
