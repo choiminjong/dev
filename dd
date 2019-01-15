@@ -1,6 +1,12 @@
 https://www.office.com/?auth=2
 
 
+git clone https://github.com/kirillF/centos-tomcat.git
+cd centos-tomcat
+docker build -t centos-jdk .
+
+docker run -p 8080:8080 -i -t --name centos-dev centos-jdk
+
 https://stefanprodan.com/2016/elasticsearch-cluster-with-docker/
 
 gs-index-query.html
