@@ -1,0 +1,41 @@
+# Centos based container with Java
+FROM centos:centos7
+
+# Install prepare infrastructure
+
+RUN yum -y update && \
+ yum -y install wget && \
+ yum -y install tar
+ 
+RUN yum -y install which
+RUN yum -y install net-tools
+RUN yum install -y perl-Digest-SHA
+RUN  yum -y install sudo 
+
+ENV export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-devel-1.8.0.191.b12-1.el7_6.x86_64
+RUN export JAVA_HOME
+
+RUN yum -y install java-1.8.0-openjdk-devel-1.8.0.191.b12-1.el7_6.x86_64
+
+
+#ssh
+RUN yum install -y passwd
+RUN yum install -y openssh
+RUN yum install -y openssh-server
+RUN yum install -y openssh-clients
+RUN yum install -y sudo
+RUN ssh-keygen -A
+
+#비밀번호
+RUN echo root:qnfth147!! | chpasswd
+
+EXPOSE 22 9200 9300 
+
+
+ENTRYPOINT ["/usr/sbin/sshd", "-D"]
+
+# docker build --rm -t dominic/ssh:centos7 .
+
+# docker run --name ela -p 23:22 -p 9200:9200 -p 9300:9300 dominic/ssh:centos7
+
+# elasticsearch
