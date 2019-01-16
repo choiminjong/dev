@@ -11,24 +11,30 @@ ARG p=elastic
 RUN groupadd -g ${gid} ${g}
 RUN useradd -d /home/${u} -u ${uid} -g ${g} -s /bin/bash ${u} 
 
-# yum settings
-RUN yum -y update
-RUN yum -y install java-1.8.0-openjdk.x86_64
-ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-3.b12.el7_3.x86_64/jre/
 
-# install wget
-RUN yum install -y wget
+# Install prepare infrastructure
 
-# install net-tools : netstat, ifconfig
-RUN yum install -y net-tools
+RUN yum -y update && \
+ yum -y install wget && \
+ yum -y install tar
+ 
+RUN yum -y install which
+RUN yum -y install net-tools
 
+#환경변수 설정 
+RUN yum -y install java-1.8.0-openjdk-devel-1.8.0.191.b12-1.el7_6.x86_64
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-devel-1.8.0.191.b12-1.el7_6.x86_64
+
+
+# Elasticsearch install
+ENV ELASTIC_VERSION=5.4.0
 
 # Binary install
-RUN wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.4.0.tar.gz
-RUN tar -xvf elasticsearch-5.4.0.tar.gz
-RUN mv elasticsearch-5.4.0 /home/${u}
-RUN rm elasticsearch-5.4.0.tar.gz
-ENV ELASTIC_HOME=/home/${u}/elasticsearch-5.4.0/
+RUN wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ELASTIC_VERSION}.tar.gz
+RUN tar -xvf elasticsearch-${ELASTIC_VERSION}.tar.gz
+RUN mv elasticsearch-${ELASTIC_VERSION} /home/${u}
+RUN rm elasticsearch-${ELASTIC_VERSION}.tar.gz
+ENV ELASTIC_HOME=/home/${u}/elasticsearch-${ELASTIC_VERSION}/
 
 # PATH reset
 ENV PATH=${PATH}:${ELASTIC_HOME}/bin
