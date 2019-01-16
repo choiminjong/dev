@@ -1,0 +1,18 @@
+# Centos based container with Java
+FROM centos:centos7
+
+# Install prepare infrastructure
+
+RUN yum -y update && \
+ yum -y install wget && \
+ yum -y install tar
+ 
+RUN yum -y install which
+RUN yum -y install net-tools
+
+#환경변수 설정 
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-devel-1.8.0.191.b12-1.el7_6.x86_64
+
+
+#JAVA설치 
+RUN yum -y install java-1.8.0-openjdk-devel-1.8.0.191.b12-1.el7_6.x86_64
