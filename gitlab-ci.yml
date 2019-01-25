@@ -1,0 +1,24 @@
+stages:
+  - build
+  - test
+
+  
+jop1:
+
+  stage: build
+  script:
+    - id
+    - cd /home/dev/
+  tags:
+    - dominic
+  only:
+    variables:
+        - $CI_COMMIT_TITLE =~ /.*change.*/    
+
+jop2:
+
+  stage: test
+  script:
+    - cd /home/dev/jop3
+  tags:
+    - dominic        
