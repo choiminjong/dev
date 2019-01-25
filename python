@@ -1,0 +1,68 @@
+
+from tkinter import *
+from tkinter import messagebox
+
+root = Tk()
+# 버튼 클릭 이벤트 핸들러
+def okClick():
+
+    A = txt.get()
+    B = txt2.get()
+    C = txt3.get()
+
+
+    messagebox.showinfo("file", A)
+
+lbl = Label(root, text="file")
+lbl.grid(row=0, column=0)
+txt = Entry(root)
+txt.grid(row=0, column=1)
+
+
+lbl2 = Label(root, text="Git tile")
+lbl2.grid(row=1, column=0)
+txt2 = Entry(root)
+txt2.grid(row=1, column=1)
+
+lbl3 = Label(root, text="Git message")
+lbl3.grid(row=2, column=0)
+txt3 = Entry(root)
+txt3.grid(row=2, column=1)
+
+
+# 버튼 클릭 이벤트와 핸들러 정의
+btn = Button(root, text="OK", width=15,command=okClick) # 위에서 정의한 함수 onClick
+btn.grid(row=3 ,column=3)
+
+root.mainloop()
+
+
+from git import Repo
+
+PATH_OF_GIT_REPO = 'C:\gitlab_dev\dev\.git'  # make sure .git folder is properly configured
+COMMIT_MESSAGE = 'change'
+
+def git_push():
+
+    try:
+        repo = Repo(PATH_OF_GIT_REPO)
+        repo.git.add(update=True)
+        repo.index.commit(COMMIT_MESSAGE)
+        origin = repo.remote(name='origin')
+        origin.push()
+    except:
+        print('error')
+    finally:
+        print('succeeded')
+
+
+    
+#git_push()
+
+
+
+
+
+
+
+
