@@ -16,6 +16,8 @@
 
 c=1
 t=1
+
+
 echo -en "\n#### Script start ####\n"
 
 while [ $c -eq 1 ]
@@ -49,28 +51,47 @@ do
         echo -en "\n####1.end ####\n"
 done
 
+
+
 #프로세스가 죽었을때 체크
 while [ $t -eq 2 ]
 do
-                #로그 확인
-                end_pid=`ps aux|grep java|grep jira|grep -v grep| wc -l`
+		#로그 확인
+		end_pid=`ps aux|grep java|grep jira|grep -v grep| wc -l`
+		
+		#서비스 재실행
+		
+        if [ $end_pid -eq 0 ]
+        then
+              /opt/atlassian/jira/bin/start-jira.sh	
+        fi
 
-                echo -en ">"
-                sleep 0.1
+		n=1
+		while(( $n <= 2 ))
+		do
+			echo -en ">"
+			sleep 1	
+			
+			jira_start=`tail -n 50 /opt/atlassian/jira/logs/catalina.out | grep "org.apache.catalina.startup.Catalina.start Server startup in" | grep -v grep | wc -l`
+						
+			if [ $jira_start -eq 1 ]
+			then
+				n=`expr $jira_start + 1`
+				
+				if [ $n -eq 2 ]
+				then
+					  echo -en "break"
+					  t=`expr $t + 1`
+					  break	
+				fi			
+			fi
+		done
 
-                #서비스 재실행
-                if [ $end_pid -eq 0 ]
-                then
-                        /opt/atlassian/jira/bin/start-jira.sh
-
-                        count=1
-                        while [[ $count -le 60 ]]; do
-                                sleep 1.2
-                                echo -en ">"
-                                (( count++ ))
-                        done
-                break
-                fi
+		if [ $t -eq 3 ]
+		then
+			break			
+		fi
+			
 done
 
 echo -en "\n#### Script end ####\n"
