@@ -1,24 +1,25 @@
 stages:
   - build
-  - test
+  - restart
 
-  
 jop1:
-
   stage: build
   script:
-    - id
-    - cd /home/dev/
+    - cd /home/conf/dev/
+    - git pull
+    - chmod +x /home/conf/dev/restart.sh
+    - \cp /opt/atlassian/jira/conf/$CI_COMMIT_TITLE /opt/atlassian/jira/conf/bak/$CI_COMMIT_TITLE.`date +"%Y-%m-%d"`-`date +"%H:%M:%S"`
+    - \cp /home/conf/dev/$CI_COMMIT_TITLE /opt/atlassian/jira/conf/$CI_COMMIT_TITLE
   tags:
-    - dominic
+    - jira
+
+jop1_sub:
+  stage: restart
+  script:
+    - id
+    - /home/conf/dev/restart.sh  
+  tags:
+    - jira
   only:
     variables:
-        - $CI_COMMIT_TITLE =~ /.*change.*/    
-
-jop2:
-
-  stage: test
-  script:
-    - cd /home/dev/jop3
-  tags:
-    - dominic        
+        - $CI_COMMIT_MESSAGE =~ /.*restart.*/
