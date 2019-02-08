@@ -2,22 +2,24 @@ stages:
   - build
   - restart
 
+  
 jop1:
   stage: build
   script:
-    - cd /home/conf/dev/
-    - git pull
-    - chmod +x /home/conf/dev/restart.sh
+    - cd /home/jira-conf/jira
+    - git pull origin master
+    - chmod +x /home/jira-conf/jira/restart.sh
     - \cp /opt/atlassian/jira/conf/$CI_COMMIT_TITLE /opt/atlassian/jira/conf/bak/$CI_COMMIT_TITLE.`date +"%Y-%m-%d"`-`date +"%H:%M:%S"`
-    - \cp /home/conf/dev/$CI_COMMIT_TITLE /opt/atlassian/jira/conf/$CI_COMMIT_TITLE
+    - \cp /home/jira-conf/jira/$CI_COMMIT_TITLE /opt/atlassian/jira/conf/$CI_COMMIT_TITLE
   tags:
     - jira
 
+    
 jop1_sub:
   stage: restart
   script:
     - id
-    - /home/conf/dev/restart.sh  
+    - /home/jira-conf/jira/restart.sh 
   tags:
     - jira
   only:
