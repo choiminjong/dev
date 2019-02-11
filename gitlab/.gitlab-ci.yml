@@ -1,0 +1,27 @@
+stages:
+  - build
+  - restart
+  
+jop1:
+  stage: build
+  script:
+    - cd /home/jira-conf/jira
+    - git stash
+    - git pull origin master
+    - git stash pop
+    - chmod +x /home/jira-conf/jira/restart.sh
+    - chmod +x /home/jira-conf/jira/back.sh
+    - /home/jira-conf/jira/back.sh
+  tags:
+    - jira
+    
+jop1_sub:
+  stage: restart
+  script:
+    - id
+    - /home/jira-conf/jira/restart.sh 
+  tags:
+    - jira
+  only:
+    variables:
+        - $CI_COMMIT_MESSAGE =~ /.*restart.*/
