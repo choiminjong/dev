@@ -25,3 +25,31 @@ jop1_sub:
   only:
     variables:
         - $CI_COMMIT_MESSAGE =~ /.*restart.*/
+        
+        
+  image: registry-gitlab.nexon.com/intra_source/weboffice/mrsixw/concourse-rsync-resource
+ 
+ 
+ 
+stages:
+  - deploy
+ 
+variables:
+  DEVELOP_SERVER_IP: ex.am.ple.ip
+ 
+develop_deploy:
+  tags:
+    - nxdmz01
+  stage: deploy
+  script:
+    - mkdir ~/.ssh
+    - ssh-keyscan -H $DEVELOP_SERVER_IP >> ~/.ssh/known_hosts
+    - echo "${DEV_SSH_PRIVATE_KEY}" > /id_rsa
+    - chmod 700 /id_rsa
+    - ssh -i /id_rsa -T fbdeploy@$DEVELOP_SERVER_IP 'cd /home/webo;git pull https://weboffice_deploy:'${Git_Pwd}'@gitlab.nexon.com/intra_source/WebOffice.git dev_merge'
+    - ssh -i /id_rsa -T fbdeploy@$DEVELOP_SERVER_IP 'cd /home/webo;git checkout '$CI_COMMIT_SHA
+  allow_failure: false
+  environment: DEVELOP_SERVER_DEPLOY
+  when: manual
+  only:
+    - dev_merge
