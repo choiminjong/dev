@@ -1,0 +1,12 @@
+/home/jira-conf/jira/atlassian-jira/WEB-INF/classes/seraph-config.xml | /opt/atlassian/jira/atlassian-jira/WEB-INF/classes/seraph-config.xml
+
+#/home/jira-conf/jira/atlassian-jira/WEB-INF/web.xml  | /opt/atlassian/jira/atlassian-jira/WEB-INF/web.xml
+
+/home/jira-conf/jira/bin/setenv.sh | /opt/atlassian/jira/bin/setenv.sh
+
+/home/jira-conf/jira/conf/context.xml | /opt/atlassian/jira/conf/context.xml
+
+#/home/jira-conf/jira/conf/server.xml  |	/opt/atlassian/jira/conf/server.xml
+
+/home/jira-conf/jira/conf/web.xml	  |	/opt/atlassian/jira/conf/web.xml
+
