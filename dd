@@ -1,4 +1,23 @@
 
+
+#네트워크 연결 
+docker network create mynetwork  --driver=bridge
+
+#엘라스틱
+docker run -d --network=mynetwork -p 9200:9200 -p 9300:9300 --name elastic -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.4.0
+
+// elasticsearch의 bash셀 접근
+docker exec -it elastic /bin/bash
+
+// 노리 플러그인 설치
+bin/elasticsearch-plugin install analysis-nori
+
+#키바나
+docker run -d --name kibana --network=mynetwork -e ELASTICSEARCH_URL=http://elastic:9200 -p 5601:5601 docker.elastic.co/kibana/kibana:6.4.0
+docker exec -it kibana /bin/bash
+ 
+ 
+ 
 https://blog.naver.com/sangrae-lee/220847865512
 
 https://www.hometax.go.kr)
